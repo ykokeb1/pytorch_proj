@@ -1,1 +1,2 @@
-# pytorch_proj
+# Deep Q Network (DQN) Project
+Using PyTorch
