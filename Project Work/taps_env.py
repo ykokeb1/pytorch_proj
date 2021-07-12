@@ -51,21 +51,25 @@ class TapsEnv(gym.envs):
             self.hand2[0] += self.hand1[0]
             if self.hand2[0] >= 5:
                 self.hand2[0] = 0
+            reward += (self.hand2[0] - temp) * 10
         elif action == 1 and self.hand[0] != 0:
             temp = self.hand2[0]
             self.hand2[0] += self.hand2[1]
             if self.hand2[0] >= 5:
                 self.hand2[0] = 0
+            reward += (self.hand2[0]-temp)*10
         elif action == 2 and self.hand[1] != 0:
             temp = self.hand2[1]
             self.hand2[1] += self.hand2[0]
             if self.hand2[1] >= 5:
                 self.hand2[1] = 0
+            reward += (self.hand2[1] - temp) * 10
         elif action == 3 and self.hand[1] != 0:
             temp = self.hand2[1]
             self.hand2[1] += self.hand2[1]
             if self.hand2[1] >= 5:
                 self.hand2[1] = 0
+            reward += (self.hand2[1] - temp) * 10
 
         # Produce a random reward when we reach the goal.
         return [self.hand1, self.hand2], random.random() * 2 if done else -0.1, done, {}
