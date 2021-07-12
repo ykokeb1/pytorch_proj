@@ -4,6 +4,7 @@ from gym.spaces import Discrete, Box
 import numpy as np
 import random
 
+
 class TapsEnv(gym.envs):
     """
     GAME: 'Taps'
@@ -26,8 +27,7 @@ class TapsEnv(gym.envs):
         self.hand1 = [1, 1]  # Player hands
         self.hand2 = [1, 1]  # Opponent hands
         self.action_space = Discrete(4)
-        # self.observation_space =  self.observation_space = Box(
-        #    0.0, self.end_pos, shape=(1, ), dtype = np.float32)
+        self.observation_space = Box(np.array([0]), np.array([inf]), dtype=np.float32)
         # Set the seed. This is only used for the final (reach goal) reward.
         self.seed(config.worker_index * config.num_workers)
 
@@ -44,26 +44,31 @@ class TapsEnv(gym.envs):
             done (bool): whether the episode has ended, in which case further step() calls will return undefined results
             info (dict): contains auxiliary diagnostic information (helpful for debugging, and sometimes learning)
         """
+        reward = 0
         assert action in [0, 1, 2, 3], action
-                if action == 0 and self.hand[0] != 0:
+        if action == 0 and self.hand[0] != 0:
+            temp = self.hand2[0]
             self.hand2[0] += self.hand1[0]
             if self.hand2[0] >= 5:
                 self.hand2[0] = 0
         elif action == 1 and self.hand[0] != 0:
+            temp = self.hand2[0]
             self.hand2[0] += self.hand2[1]
             if self.hand2[0] >= 5:
                 self.hand2[0] = 0
         elif action == 2 and self.hand[1] != 0:
+            temp = self.hand2[1]
             self.hand2[1] += self.hand2[0]
             if self.hand2[1] >= 5:
                 self.hand2[1] = 0
         elif action == 3 and self.hand[1] != 0:
+            temp = self.hand2[1]
             self.hand2[1] += self.hand2[1]
             if self.hand2[1] >= 5:
                 self.hand2[1] = 0
 
         # Produce a random reward when we reach the goal.
-        return [self.cur_pos], random.random() * 2 if done else -0.1, done, {}
+        return [self.hand1, self.hand2], random.random() * 2 if done else -0.1, done, {}
 
     def reset(self):
         """Resets the environment to an initial state and returns an initial
