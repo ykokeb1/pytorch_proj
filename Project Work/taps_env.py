@@ -76,8 +76,8 @@ class TapsEnv(gym.envs):
         Returns:
             observation (object): the initial observation.
         """
-        self.hand1 = [0, 0]
-        self.hand2 = [0, 0]
+        self.hand1 = [1, 1]
+        self.hand2 = [1, 1]
         return self.hand1, self.hand2
 
     def render(self, mode='human'):
