@@ -45,19 +45,19 @@ class TapsEnv(gym.envs):
             info (dict): contains auxiliary diagnostic information (helpful for debugging, and sometimes learning)
         """
         assert action in [0, 1, 2, 3], action
-        if action == 0 and self.hand[0] != 0:
+                if action == 0 and self.hand[0] != 0:
             self.hand2[0] += self.hand1[0]
             if self.hand2[0] >= 5:
                 self.hand2[0] = 0
-        elif action == 1:
+        elif action == 1 and self.hand[0] != 0:
             self.hand2[0] += self.hand2[1]
             if self.hand2[0] >= 5:
                 self.hand2[0] = 0
-        elif action == 2:
+        elif action == 2 and self.hand[1] != 0:
             self.hand2[1] += self.hand2[0]
             if self.hand2[1] >= 5:
                 self.hand2[1] = 0
-        elif action == 3:
+        elif action == 3 and self.hand[1] != 0:
             self.hand2[1] += self.hand2[1]
             if self.hand2[1] >= 5:
                 self.hand2[1] = 0
